@@ -10,4 +10,4 @@ import "crypto"
 // value for [mldsa.PrivateKey.Sign].
 //
 // [pre-hashed μ message representative]: https://www.rfc-editor.org/rfc/rfc9881.html#externalmu
-const MLDSAMu crypto.Hash = 0xABCDEF12
+const MLDSAMu crypto.Hash = 20

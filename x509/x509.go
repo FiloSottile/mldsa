@@ -47,7 +47,7 @@ func isMLDSAOID(oid asn1.ObjectIdentifier) bool {
 		oid.Equal(oidPublicKeyMLDSA87)
 }
 
-func mldsaParametersFromOID(oid asn1.ObjectIdentifier) (*mldsa.Parameters, bool) {
+func mldsaParametersFromOID(oid asn1.ObjectIdentifier) (mldsa.Parameters, bool) {
 	switch {
 	case oid.Equal(oidPublicKeyMLDSA44):
 		return mldsa.MLDSA44(), true
@@ -56,10 +56,10 @@ func mldsaParametersFromOID(oid asn1.ObjectIdentifier) (*mldsa.Parameters, bool)
 	case oid.Equal(oidPublicKeyMLDSA87):
 		return mldsa.MLDSA87(), true
 	}
-	return nil, false
+	return mldsa.Parameters{}, false
 }
 
-func oidFromMLDSAParameters(params *mldsa.Parameters) (asn1.ObjectIdentifier, bool) {
+func oidFromMLDSAParameters(params mldsa.Parameters) (asn1.ObjectIdentifier, bool) {
 	switch params {
 	case mldsa.MLDSA44():
 		return oidPublicKeyMLDSA44, true

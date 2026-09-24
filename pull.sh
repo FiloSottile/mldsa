@@ -26,11 +26,13 @@ fi
 git -c advice.detachedHead=false clone --no-checkout "${REFERENCE[@]}" \
 	-b "$TAG" https://go.googlesource.com/go.git "$TMPDIR"
 
-git -C "$TMPDIR" filter-repo --force \
+# git-filter-repo can't parse multi-line values in the global config.
+GIT_CONFIG_GLOBAL=/dev/null git -C "$TMPDIR" filter-repo --force \
 	--paths-from-file /dev/stdin \
 	--prune-empty always \
 	--prune-degenerate always \
 	--tag-callback 'tag.skip()' <<'EOF'
+src/crypto/internal/cryptotest/wycheproof
 src/crypto/internal/fips140/mldsa
 src/crypto/internal/fips140test/mldsa_test.go
 src/crypto/mldsa

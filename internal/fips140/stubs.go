@@ -1,5 +1,5 @@
 package fips140
 
-const Enabled = false
+func Enabled() bool { return false }
 
 func RecordApproved() {}

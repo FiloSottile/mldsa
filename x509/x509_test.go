@@ -23,7 +23,7 @@ func TestMLDSAPKIXAndPKCS8(t *testing.T) {
 		name          string
 		privateKeyPEM string
 		publicKeyPEM  string
-		params        *mldsa.Parameters
+		params        mldsa.Parameters
 	}{
 		{"ML-DSA-44", rfc9881ExamplePrivateKeyMLDSA44, rfc9881ExamplePublicKeyMLDSA44, mldsa.MLDSA44()},
 		{"ML-DSA-65", rfc9881ExamplePrivateKeyMLDSA65, rfc9881ExamplePublicKeyMLDSA65, mldsa.MLDSA65()},
