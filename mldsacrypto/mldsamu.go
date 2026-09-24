@@ -1,6 +1,4 @@
-// Package mldsacrypto is a stand-in for the standard library's crypto package,
-// until MLDSAMu is added there, at which point this package will become a
-// wrapper.
+// Package mldsacrypto is a stand-in for the standard library's crypto package.
 package mldsacrypto
 
 import "crypto"

@@ -2,11 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package mldsa
-
 // This file is confusingly named to make merging with upstream easier.
 // Upstream, the public mldsa package is only filled out when fips140v1.26 is
-// set. Here, we always provide the full implementation.
+// set. Instead, this package provides the full implementation for Go 1.25–1.26
+// or for fips140v1.0, and a wrapper in mldsa_go1.27.go for Go 1.27 and later.
+//
+//go:build !go1.27 || fips140v1.0
+
+package mldsa
 
 import (
 	"crypto"

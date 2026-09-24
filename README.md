@@ -1,10 +1,15 @@
 # filippo.io/mldsa
 
-This package implements the [crypto/mldsa proposed API](https://go.dev/issue/77626).
+This package is a drop-in replacement for the standard library's `crypto/mldsa` package.
 
-Its API may change, and eventually this package will become a wrapper around the
-final API in the standard library.
+On Go 1.27 and later with Go Cryptographic Module v1.26+, this package is a
+transparent wrapper around `crypto/mldsa`. It uses type aliases, so this package
+and the standard library's can be used interchangeably even within the same
+program.
 
-The actual implementation is merged from the internal upstream package
-crypto/internal/fips140/mldsa, with very few changes (visible in the merge
-commits in the git history).
+On earlier versions of Go or with Go Cryptographic Module v1.0, this package
+provides a standalone implementation extracted from the upstream one, with very
+few changes (visible in the merge commits in the git history).
+
+The filippo.io/mldsa/x509 subpackage similarly extends the corresponding
+`crypto/x509` functionality to support ML-DSA keys regardless of the Go version.

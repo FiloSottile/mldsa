@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !go1.27 || fips140v1.0
+
 // Package x509 implements PKIX public key and PKCS #8 private key parsing and
 // marshaling for ML-DSA keys.
 //

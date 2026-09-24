@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !go1.27 || fips140v1.0
+
 // Package mldsa implements the post-quantum ML-DSA signature scheme specified
 // in [FIPS 204].
 //

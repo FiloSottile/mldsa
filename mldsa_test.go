@@ -11,6 +11,7 @@ import (
 	"encoding/hex"
 	"flag"
 	"math/rand/v2"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -176,6 +177,19 @@ func TestAllocations(t *testing.T) {
 		// enough to require heap allocation. Add pk, its inner struct, and the
 		// return value of k.PublicKey().
 		expected += 3
+	}
+	if reflect.TypeFor[PrivateKey]().PkgPath() == "crypto/mldsa" {
+		// On Go 1.27 and later, this package wraps crypto/mldsa with type
+		// aliases. The compiler doesn't inline the crypto/mldsa methods into
+		// callers that don't import crypto/mldsa directly, and the NewPublicKey
+		// wrapper is too large to inline, so the return values of
+		// k.PublicKey(), k.PublicKey().Bytes(), and NewPublicKey escape to the
+		// heap. With v1.26.0, the PublicKey is already heap allocated.
+		if fips140.Version() == "v1.26.0" {
+			expected += 2
+		} else {
+			expected += 3
+		}
 	}
 	cryptotest.SkipTestAllocations(t)
 	if allocs := testing.AllocsPerRun(100, func() {

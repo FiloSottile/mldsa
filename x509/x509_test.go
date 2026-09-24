@@ -80,6 +80,16 @@ func TestMLDSAPKIXAndPKCS8(t *testing.T) {
 }
 
 func TestParsePKCS8PrivateKeyRejectsUnsupportedMLDSAEncodings(t *testing.T) {
+	// pkcs8 reflects an ASN.1, PKCS #8 PrivateKey. See RFC 5208.
+	type pkcs8 struct {
+		Version    int
+		Algo       pkix.AlgorithmIdentifier
+		PrivateKey []byte
+		// optional attributes omitted.
+	}
+
+	oidPublicKeyMLDSA44 := asn1.ObjectIdentifier{2, 16, 840, 1, 101, 3, 4, 3, 17}
+
 	for _, tc := range []struct {
 		name       string
 		privateKey []byte

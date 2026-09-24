@@ -1,0 +1,45 @@
+name: Test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Go ${{ matrix.go }}, GOFIPS140=${{ matrix.gofips140 }}, fips140=${{ matrix.fips140 }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ['1.25.x', '1.26.x', '1.27.x']
+        gofips140: ['off', 'v1.0.0', 'v1.26.0']
+        fips140: ['off']
+        exclude:
+          # Go 1.25 doesn't ship the v1.26.0 module.
+          - go: '1.25.x'
+            gofips140: 'v1.26.0'
+        include:
+          # FIPS 140-3 mode only affects crypto/mldsa, which is used on Go 1.27
+          # and later with any module other than v1.0.0.
+          - go: '1.27.x'
+            gofips140: 'off'
+            fips140: 'on'
+          - go: '1.27.x'
+            gofips140: 'v1.26.0'
+            fips140: 'on'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go }}
+          cache: false
+      - run: go test ./...
+        env:
+          GOFIPS140: ${{ matrix.gofips140 }}
+          GODEBUG: fips140=${{ matrix.fips140 }}
+          # The tests fetch the github.com/c2sp/wycheproof module with go mod
+          # download, which refuses to download it with a Go older than the go
+          # line of its go.mod, currently 1.26.4.
+          GOTOOLCHAIN: auto
